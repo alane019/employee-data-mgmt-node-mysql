@@ -1,4 +1,4 @@
-#github's gitignore template
+#github's gitignore template for node.js development
 # Logs
 logs
 *.log
