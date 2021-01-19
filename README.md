@@ -14,11 +14,11 @@ Employee data management with Node.JS, MySQL and Inquirer command line utility.
 
 ## Installation
 
-Navigate to the root directory for this project in your terminal of choice, then install the required packages with npm install.
+Navigate to the root directory for this project in your terminal of choice, then install the required packages with `npm install`.
 
 ## Usage
 
-To run the application, after installing required packages, prompt will begin by typing node app in the root directory of this project.
+To run the application, after installing required packages, prompt will begin by typing `node app` in the root directory of this project.
 
 ## Contributing
 
