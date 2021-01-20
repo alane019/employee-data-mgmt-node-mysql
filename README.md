@@ -1,6 +1,6 @@
 # Employee Data Management CMS with Node.JS, MySQL, and Inquirer
 
-Demo will be viewable here: [https://alane019.github.io/employee-data-mgmt-node-mysql/](https://alane019.github.io/employee-data-mgmt-node-mysql)
+Demo is viewable here: [https://alane019.github.io/employee-data-mgmt-node-mysql/](https://alane019.github.io/employee-data-mgmt-node-mysql)
 
 Employee data management with Node.JS, MySQL and Inquirer command line utility.
 
