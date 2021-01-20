@@ -1,8 +1,26 @@
-INSERT INTO department (name)
-VALUES ('admin'), ('finance'), ('engineering'), ('legal');
+drop database if exists employee_cms;
+create database employee_cms;
+use employee_cms;
 
-INSERT INTO role (title, salary, department_id)
-VALUES ('manager', 90000, 1), ('sales assoc', 75000, 2), ('engineer', 80000, 3), ('CEO', 200000, 1), ('sales intern', 25000, 2);
+create table department(
+department_id integer not null auto_increment,
+name varchar(30) not null,
+primary key (department_id)
+);
 
-INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ('Ronald','McDouglas', 1, 4), ('Maria','Doe', 2, 1), ('Chuck','Logan', 3, 1), ('Rebecca','Smith', 4, 4);
+create table role(
+role_id integer not null auto_increment,
+title varchar(30) not null, 
+salary decimal not null,
+department_id integer not null,
+primary key (role_id)
+);
+
+create table employee(
+    employee_id integer not null auto_increment,
+    first_name varchar(30) not null,
+    last_name varchar(30) not null,
+    role_id integer not null,
+    manager_id integer,
+    primary key (employee_id)
+);
