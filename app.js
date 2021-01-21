@@ -15,7 +15,6 @@ const connection = mysql.createConnection({
     database: "employee_cms"
 });
 
-	
 ui.displayTitle("Employee Data Mgmt - with Node.JS and MySQL");
 
 connection.connect(err => {
@@ -29,41 +28,57 @@ connection.connect(err => {
         console.log(` on port: ${connection.config.port}`);
         console.log(` using host: ${connection.config.host}`);
         ui.logEndLine();
-        setTimeout(function () {
-            startInquiry();
-        }, 3000); 
+        waitThenRun(1000);
 	}
 }); 
 
-
-function startInquiry() {
-    inquirer.prompt({
+var questions = [{   
         name: "selection",
         type: "rawlist",
         message: "What would you like to do?",
         choices: [
-            "View department table",
-            "View role table",
-            "View employee table",
-            "[End connection] "
+                "View department table",
+                "View role table",
+                "View employee table",
+                "Add new department",
+                "[End connection]"
         ]
-    }).then((answer) => {
-        if(answer.selection == "View department table") {
-            viewDept(); return;
+        },
+        {
+            type: "input",
+            name: "newDeptName",
+            message: "Enter new department name: ",
+            when: function (answers) {
+                return answers.selection == "Add new department";
+            }
         }
-        else if(answer.selection == "View role table") {
+    ];
+
+function startInquiry() {
+    inquirer.prompt(questions)
+    .then(function(answers) {
+        if(answers.selection == "View department table") {
+            viewDept(); 
+            return;
+        }
+        else if(answers.selection == "View role table") {
             viewRole();
             return;
         }  
-        else if(answer.selection == "View employee table") {
+        else if(answers.selection == "View employee table") {
             viewEmpl();
+            return;
         }
-        else if(answer.selection == "[End connection] ") {
+        else if(answers.selection == "Add new department") {
+            addDept(answers);
+            return;
+        }
+        else if(answers.selection == "[End connection]") {
             endConnection();
+            return;
         }    
     });
 }
-
 
 viewDept = () =>  {
     connection.query("SELECT * FROM department", (error, data) => {
@@ -76,7 +91,7 @@ viewDept = () =>  {
             console.table(data);
             ui.logEndLine();
             console.log();
-            startInquiry();
+            waitThenRun(1000);
         }
     });  
 }
@@ -93,7 +108,7 @@ viewRole = () =>  {
             console.table(data);
             ui.logEndLine();
             console.log();
-            startInquiry();
+            waitThenRun(1000);
         }
     });
 }
@@ -109,17 +124,93 @@ viewEmpl = () =>  {
             console.table(data);
             ui.logEndLine();
             console.log();
-            startInquiry();
+            waitThenRun(1000);
         }
     });
 }
+
+let getCountOnColumn = function(checkVal, onTable, onColumn){
+        if(onTable == "department" && onColumn == "deptid"){
+            connection.query("SELECT sum(*) FROM department where ?",[
+                {deptid: checkVal}
+            ], function(err, results) {
+                if (err) throw err;
+                console.log(results.affectedRows + " affected rows. \n");
+                console.log("Results: \n");
+                console.log(results);
+            });
+        }
+        if(onTable == "department" && onColumn == "name"){
+            connection.query("SELECT sum(*) FROM department where ?",[
+                {name: checkVal}
+            ], function(err, results) {
+                if (err) throw err;
+                console.log(results.affectedRows + " affected rows. \n");
+                console.log("Results: \n");
+                console.log(results);
+            });
+        }
+ 
+
+    if(onTable == "role"){
+        console.log(" not implemented for table: " + onTable);
+    }
+
+    if(onTable == "employee"){
+        console.log(" not implemented for table: " + onTable);
+    }
+}
+
+
+
+
+
+
+/*
+  connection.query("SELECT * FROM auctions", function(err, results) {
+    if (err) throw err;
+    // once you have the items, prompt the user for which they'd like to bid on
+    inquirer
+      .prompt([
+        {
+
+
+*/
+
+
+addDept = (inquirerQuestions) =>  {
+    let newDeptNameText = inquirerQuestions.newDeptName;
+     var query = connection.query("INSERT INTO department SET ?",
+     [
+         {
+            name: newDeptNameText
+         }
+     ],
+     function(err, res){
+         if (err) throw err;
+         console.log(res.affectedRows + " row inserted \n");
+        waitThenRun(1000);
+     })
+};  
+ 
 
 
 // end connection
 endConnection = () =>  {
     ui.logStartLine();
-    console.log(" Connection ended ")
-    ui.logEndLine();
-    connection.end();
+    (err) => {
+        if(err) throw err;
+        else {
+            connection.end();
+            ui.logStartLine();
+            console.log(" Connection ended ")
+            ui.logEndLine();
+        }
+    }
 }
 
+let waitThenRun =  function(millesec){
+    setTimeout(function() {
+        startInquiry();
+    }, millesec);   
+}
