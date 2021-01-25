@@ -14,7 +14,7 @@ Employee data management with Node.JS, MySQL and Inquirer command line utility.
 
 ## Installation
 
-Navigate to the root directory for this project in your terminal of choice, then install the required packages with `npm install`. Run **schema.sql** to create the employee_cms database in your local MySQL environment, and then run **schema.sql** to load the initial data. 
+Navigate to the root directory for this project in your terminal of choice, then install the required packages with `npm install`. Run **schema.sql** to create the employee_cms database in your local MySQL environment, and then run **seed.sql** to load the initial data. 
 
 ## Usage
 
